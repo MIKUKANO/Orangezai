@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="./resources/http/File/logo.png" alt="Orangezai Logo" width="160">
+
 # Orangezai
 
 🍊崽 Bot，支持多账号，支持协议端：OneBotv11、ComWeChat、GSUIDCore、ICQQ、QQBot、QQ频道、微信、KOOK、Telegram、Discord、OPQBot、Lagrange
