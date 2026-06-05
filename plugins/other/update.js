@@ -30,7 +30,18 @@ export class update extends plugin {
   }
 
   get quiet() {
-    return /^#(全部)?(安?静)/.test(this.e.msg)
+    return this.e.msg.includes("全部") || /^#安?静/.test(this.e.msg)
+  }
+
+  async replyUpdate(msg, type = "success") {
+    if (!msg) return false
+    const msgs = type === "error" ? this.updateErrMsgs : this.updateMsgs
+    if (!Array.isArray(msgs)) return this.reply(msg)
+
+    if (msg.type === "node" && Array.isArray(msg.data))
+      msgs.push(...msg.data)
+    else msgs.push({ message: msg })
+    return true
   }
 
   exec(cmd, plugin, opts = {}) {
@@ -81,7 +92,7 @@ export class update extends plugin {
 
     logger.mark(`${this.e.logFnc} 开始${type} ${this.typeName}`)
     if (!this.quiet)
-      await this.reply(`开始${type} ${this.typeName}`)
+      await this.replyUpdate(`开始${type} ${this.typeName}`)
     const ret = await this.exec(cm, plugin)
 
     if (ret.error && !await this.gitErr(plugin, ret.stdout, ret.error.message)) {
@@ -92,13 +103,13 @@ export class update extends plugin {
     const time = await this.getTime(plugin)
     if (/Already up|已经是最新/.test(ret.stdout)) {
       if (!this.quiet)
-        await this.reply(`${this.typeName} 已是最新\n最后更新时间：${time}`)
+        await this.replyUpdate(`${this.typeName} 已是最新\n最后更新时间：${time}`)
     } else {
       this.isUp = true
       if (/package\.json/.test(ret.stdout))
         this.isPkgUp = true
-      await this.reply(`${this.typeName} 更新成功\n更新时间：${time}`)
-      await this.reply(await this.getLog(plugin))
+      await this.replyUpdate(`${this.typeName} 更新成功\n更新时间：${time}`)
+      await this.replyUpdate(await this.getLog(plugin))
     }
 
     logger.mark(`${this.e.logFnc} 最后更新时间：${time}`)
@@ -151,17 +162,17 @@ export class update extends plugin {
 
   async gitErr(plugin, stdout, error) {
     if (/unable to access|无法访问/.test(error))
-      await this.reply(`远程仓库连接错误：${this.gitErrUrl(error)}`)
+      await this.replyUpdate(`远程仓库连接错误：${this.gitErrUrl(error)}`, "error")
     else if (/not found|未找到|does not (exist|appear)|不存在|Authentication failed|鉴权失败/.test(error))
-      await this.reply(`远程仓库地址错误：${this.gitErrUrl(error)}`)
+      await this.replyUpdate(`远程仓库地址错误：${this.gitErrUrl(error)}`, "error")
     else if (/be overwritten by merge|被合并操作覆盖/.test(error) || /Merge conflict|合并冲突/.test(stdout))
-      await this.reply(`${error}\n${stdout}\n若修改过文件请手动更新，否则发送 #强制更新${plugin}`)
+      await this.replyUpdate(`${error}\n${stdout}\n若修改过文件请手动更新，否则发送 #强制更新${plugin}`, "error")
     else if (/divergent branches|偏离的分支/.test(error)) {
       const ret = await this.exec("git pull --rebase", plugin)
       if (!ret.error && /Successfully rebased|成功变基/.test(ret.stdout+ret.stderr))
         return true
-      await this.reply(`${error}\n${stdout}\n若修改过文件请手动更新，否则发送 #强制更新${plugin}`)
-    } else await this.reply(`${error}\n${stdout}\n未知错误，可尝试发送 #强制更新${plugin}`)
+      await this.replyUpdate(`${error}\n${stdout}\n若修改过文件请手动更新，否则发送 #强制更新${plugin}`, "error")
+    } else await this.replyUpdate(`${error}\n${stdout}\n未知错误，可尝试发送 #强制更新${plugin}`, "error")
   }
 
   async updateAll() {
@@ -171,16 +182,28 @@ export class update extends plugin {
     }
 
     uping = true
-    await this.runUpdate()
-    for (let plugin of await fs.readdir("plugins")) {
-      plugin = await this.getPlugin(plugin)
-      if (plugin === false) continue
-      await this.runUpdate(plugin)
-    }
+    this.updateMsgs = []
+    this.updateErrMsgs = []
+    try {
+      await this.runUpdate()
+      for (let plugin of await fs.readdir("plugins")) {
+        plugin = await this.getPlugin(plugin)
+        if (plugin === false) continue
+        await this.runUpdate(plugin)
+      }
 
-    if (this.isPkgUp) await this.updatePackage()
-    if (this.isUp) this.restart()
-    uping = false
+      if (this.updateMsgs.length)
+        await this.reply(Bot.makeForwardMsg(this.updateMsgs))
+      if (this.updateErrMsgs.length)
+        await this.reply(Bot.makeForwardMsg(this.updateErrMsgs))
+
+      if (this.isPkgUp) await this.updatePackage()
+      if (this.isUp) this.restart()
+    } finally {
+      delete this.updateMsgs
+      delete this.updateErrMsgs
+      uping = false
+    }
   }
 
   restart() {
