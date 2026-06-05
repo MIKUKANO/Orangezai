@@ -1,5 +1,4 @@
 import cfg from "../../lib/config/config.js"
-import { spawn } from "child_process"
 import PluginsLoader from "../../lib/plugins/loader.js"
 
 const temp = {}
@@ -100,7 +99,7 @@ export class Restart extends plugin {
       return this.stop(restart.time)
 
     const time = Bot.getTimeDiff(restart.time)
-    const msg = [restart.isExit ? `开机成功，距离上次停止${time}` : `重启成功，用时${time}`]
+    const msg = [this.getRestartMsg(restart, time)]
     if (restart.msg_id)
       msg.unshift(segment.reply(restart.msg_id))
 
@@ -110,6 +109,14 @@ export class Restart extends plugin {
       await Bot.sendFriendMsg(restart.bot_id, restart.user_id, msg)
     else
       await Bot.sendMasterMsg(msg)
+  }
+
+  getRestartMsg(restart, time) {
+    if (restart.reason === "dependency") {
+      const packages = Array.isArray(restart.packages) ? restart.packages.join("、") : restart.packages
+      return `依赖安装完成${packages ? `：${packages}` : ""}，重启成功，用时${time}`
+    }
+    return restart.isExit ? `开机成功，距离上次停止${time}` : `重启成功，用时${time}`
   }
 
   async set(isExit) {
@@ -132,10 +139,7 @@ export class Restart extends plugin {
   async restart() {
     await this.set()
     if (appType === "pm2") {
-      const ret = await Bot.exec("bun run restart")
-      if (!ret.error) process.exit()
-      await this.reply(`重启错误\n${ret.error}\n${ret.stdout}\n${ret.stderr}`)
-      Bot.makeLog("error", ["重启错误", ret])
+      process.exit()
     } else process.exit()
   }
 
@@ -151,7 +155,8 @@ export class Restart extends plugin {
   async exit() {
     await this.set(true)
     if (appType === "pm2") {
-      const ret = await Bot.exec("bun run stop")
+      const ret = await Bot.exec(`pm2 stop ${process.env.name || "Orangezai"}`)
+      if (!ret.error) return process.exit()
       await this.reply(`停止错误\n${ret.error}\n${ret.stdout}\n${ret.stderr}`)
       Bot.makeLog("error", ["停止错误", ret])
     } else process.exit(1)

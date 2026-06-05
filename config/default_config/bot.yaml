@@ -43,5 +43,8 @@ puppeteer_ws:
 # puppeteer截图超时时间
 puppeteer_timeout:
 
+# 缺少依赖时自动执行 bun add，默认关闭
+auto_install_dependencies: false
+
 # 米游社接口代理地址，国际服用
 proxyAddress:
