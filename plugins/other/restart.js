@@ -113,8 +113,10 @@ export class Restart extends plugin {
 
   getRestartMsg(restart, time) {
     if (restart.reason === "dependency") {
-      const packages = Array.isArray(restart.packages) ? restart.packages.join("、") : restart.packages
-      return `依赖安装完成${packages ? `：${packages}` : ""}，重启成功，用时${time}`
+      const packages = Array.isArray(restart.workspaces)
+        ? restart.workspaces.map(item => `${item.name} (${(item.packages || []).join("、")})`).join("；")
+        : Array.isArray(restart.packages) ? restart.packages.join("、") : restart.packages
+      return `插件依赖安装完成${packages ? `：${packages}` : ""}，重启成功，用时${time}`
     }
     return restart.isExit ? `开机成功，距离上次停止${time}` : `重启成功，用时${time}`
   }

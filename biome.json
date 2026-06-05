@@ -11,9 +11,6 @@
             "**",
             "!.github",
             "!.vscode",
-            "!config.json",
-            "!count.json",
-            "!data.json",
             "!lib/modules"
         ]
     },

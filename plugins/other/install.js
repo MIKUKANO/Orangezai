@@ -2,6 +2,8 @@ import { Restart } from "./restart.js"
 
 let insing = false
 const list = {
+  "genshin": "https://gitee.com/TimeRainStarSky/Yunzai-genshin",
+  "R-Plugin": "https://gitee.com/kyrzy0416/rconsole-plugin",
   "Guoba-Plugin"  :"https://gitee.com/guoba-yunzai/guoba-plugin",
   "Lagrange-Plugin"   :"https://gitee.com/TimeRainStarSky/Yunzai-Lagrange-Plugin",
   "Telegram-Plugin"   :"https://gitee.com/TimeRainStarSky/Yunzai-Telegram-Plugin",
@@ -70,17 +72,28 @@ export class install extends plugin {
     await this.reply(`开始安装 ${name} 插件`)
 
     insing = true
-    const ret = await Bot.exec(`git clone --depth 1 --single-branch "${url}" "${path}"`)
-    if (await Bot.fsStat(`${path}/package.json`))
-      await Bot.exec("bun install")
-    insing = false
+    try {
+      const ret = await Bot.exec(`git clone --depth 1 --single-branch "${url}" "${path}"`)
 
-    if (ret.error) {
-      logger.mark(`${this.e.logFnc} ${name} 插件安装错误`)
-      this.gitErr(name, ret.error.message, ret.stdout)
-      return false
+      if (ret.error) {
+        logger.mark(`${this.e.logFnc} ${name} 插件安装错误`)
+        this.gitErr(name, ret.error.message, ret.stdout)
+        return false
+      }
+
+      if (await Bot.fsStat(`${path}/package.json`)) {
+        const installRet = await Bot.exec(["bun", "install", "--filter", `./${path}`])
+        if (installRet.error) {
+          await this.reply(`${name} 插件依赖安装错误\n${installRet.error}\n${installRet.stdout}\n${installRet.stderr}`)
+          Bot.makeLog("error", ["插件依赖安装错误", name, installRet], "Plugin")
+          return false
+        }
+      }
+
+      return this.restart()
+    } finally {
+      insing = false
     }
-    return this.restart()
   }
 
   gitErrUrl(error) {

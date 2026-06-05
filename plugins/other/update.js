@@ -62,11 +62,18 @@ export class update extends plugin {
     if (plugin === false) return false
 
     uping = true
-    await this.runUpdate(plugin)
+    this.isPkgUp = false
+    this.isUp = false
+    this.pkgUpPlugins = new Set()
+    try {
+      await this.runUpdate(plugin)
 
-    if (this.isPkgUp) await this.updatePackage()
-    if (this.isUp) this.restart()
-    uping = false
+      const packageUpdated = !this.isPkgUp || await this.updatePackage()
+      if (packageUpdated && this.isUp) this.restart()
+    } finally {
+      delete this.pkgUpPlugins
+      uping = false
+    }
   }
 
   async getPlugin(plugin = this.e.msg.replace(/#(安?静)?(强制)?更新(日志)?/, "")) {
@@ -106,8 +113,11 @@ export class update extends plugin {
         await this.replyUpdate(`${this.typeName} 已是最新\n最后更新时间：${time}`)
     } else {
       this.isUp = true
-      if (/package\.json/.test(ret.stdout))
+      if (/package\.json/.test(ret.stdout)) {
         this.isPkgUp = true
+        this.pkgUpPlugins ??= new Set()
+        this.pkgUpPlugins.add(plugin)
+      }
       await this.replyUpdate(`${this.typeName} 更新成功\n更新时间：${time}`)
       await this.replyUpdate(await this.getLog(plugin))
     }
@@ -182,6 +192,9 @@ export class update extends plugin {
     }
 
     uping = true
+    this.isPkgUp = false
+    this.isUp = false
+    this.pkgUpPlugins = new Set()
     this.updateMsgs = []
     this.updateErrMsgs = []
     try {
@@ -197,13 +210,52 @@ export class update extends plugin {
       if (this.updateErrMsgs.length)
         await this.reply(Bot.makeForwardMsg(this.updateErrMsgs))
 
-      if (this.isPkgUp) await this.updatePackage()
-      if (this.isUp) this.restart()
+      const packageUpdated = !this.isPkgUp || await this.updatePackage()
+      if (packageUpdated && this.isUp) this.restart()
     } finally {
       delete this.updateMsgs
       delete this.updateErrMsgs
+      delete this.pkgUpPlugins
       uping = false
     }
+  }
+
+  async updatePackage() {
+    await this.replyUpdate("开始更新依赖")
+
+    const plugins = [
+      ...(this.pkgUpPlugins || [])
+    ]
+    const hasRoot = plugins.includes("")
+    const pluginFilters = plugins
+      .filter(Boolean)
+      .map(plugin => `./plugins/${plugin}`)
+
+    if (hasRoot) {
+      const ret = await this.exec(["bun", "install"])
+      if (ret.error) {
+        await this.replyUpdate(`依赖更新失败\n${ret.error}\n${ret.stdout}\n${ret.stderr}`, "error")
+        return false
+      }
+    }
+
+    if (pluginFilters.length) {
+      const command = [
+        "bun",
+        "install"
+      ]
+      for (const filter of pluginFilters)
+        command.push("--filter", filter)
+
+      const ret = await this.exec(command)
+      if (ret.error) {
+        await this.replyUpdate(`插件依赖更新失败\n${ret.error}\n${ret.stdout}\n${ret.stderr}`, "error")
+        return false
+      }
+    }
+
+    await this.replyUpdate("依赖更新完成")
+    return true
   }
 
   restart() {
