@@ -1,6 +1,6 @@
 {
     "name": "orangezai",
-    "version": "1.1.1",
+    "version": "3.0.0",
     "author": "RrOrange, TimeRainStarSky, Yoimiya-Kokomi, Le-niao",
     "main": "./index.js",
     "dependencies": {
