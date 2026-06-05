@@ -24,6 +24,20 @@
 - Git
 - Chrome/Chromium（可选）
 
+1、bun的国内源安装：
+
+```
+curl -fsSL https://gitee.com/akirarika/bun-cn/raw/main/install.sh | bash
+```
+
+2、playwright安装：
+
+```
+bun run browser:install
+```
+
+3、本🐔安装：
+
 ```sh
 git clone --depth 1 https://github.com/zhiyu1998/Orangezai
 cd Orangezai
@@ -133,3 +147,4 @@ ws://localhost:2536/GSUIDCore
 
 - [Yunzai-Bot](../../../../Le-niao/Yunzai-Bot)
 - [Miao-Yunzai](../../../../yoimiya-kokomi/Miao-Yunzai)
+- [时雨◎星空 / Yunzai](https://gitee.com/TimeRainStarSky/Yunzai)
