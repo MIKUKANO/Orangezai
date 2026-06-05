@@ -74,6 +74,26 @@ pm2 save
 pm2 startup
 ```
 
+## 开发
+
+提交代码前建议先运行 Biome 检查：
+
+```sh
+bun run check
+```
+
+需要自动修复可执行：
+
+```sh
+bun run check:fix
+```
+
+只格式化代码可执行：
+
+```sh
+bun run format
+```
+
 ## 使用
 
 推荐安装插件：

@@ -1,12 +1,12 @@
 {
-  "name": "puppeteer",
-  "version": "0.0.0-orangezai",
-  "type": "module",
-  "main": "./index.js",
-  "dependencies": {
-    "playwright": "^1.58.2"
-  },
-  "exports": {
-    ".": "./index.js"
-  }
+    "name": "puppeteer",
+    "version": "0.0.0-orangezai",
+    "type": "module",
+    "main": "./index.js",
+    "dependencies": {
+        "playwright": "^1.58.2"
+    },
+    "exports": {
+        ".": "./index.js"
+    }
 }
