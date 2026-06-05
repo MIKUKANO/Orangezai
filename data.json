@@ -1,0 +1,617 @@
+{
+  "global": {
+    "appSettings": {
+      "notificationInterval": 30,
+      "prefetchTimeout": 3000,
+      "prefetchRedisExpires": 259200000,
+      "retryFeeds": true,
+      "grayModeConfig": {
+        "global": false,
+        "dateRange": [
+          "2023-08-01 00:00:00",
+          "2023-08-19 23:59:59"
+        ],
+        "greyRule": {
+          "layout": {
+            "enable": false,
+            "pages": [
+              "Explore"
+            ]
+          },
+          "pages": [
+            "Explore"
+          ]
+        },
+        "disableLikeNotes": [
+          "64ce36f7000000000c036ba5"
+        ],
+        "disableSearchHint": false
+      },
+      "NIO": true,
+      "ICPInfoList": [
+        {
+          "label": "沪ICP备13030189号",
+          "link": "//beian.miit.gov.cn/",
+          "title": "小红书_沪ICP备"
+        },
+        {
+          "label": "营业执照",
+          "link": "//fe-video-qc.xhscdn.com/fe-platform/1315dcf7990709473005051f944bafcc641a879b.pdf",
+          "title": "小红书_营业执照"
+        },
+        {
+          "label": "2024沪公网安备31010102002533号",
+          "link": "//www.beian.gov.cn/portal/registerSystemInfo?recordcode=31010102002533",
+          "title": "小红书_沪公网安备"
+        },
+        {
+          "label": "增值电信业务经营许可证：沪B2-20150021",
+          "link": "//fe-video-qc.xhscdn.com/picasso-editor/c081c205c927d605c959e3d6e1b22975c8a4b64f.pdf",
+          "title": "小红书_网文"
+        },
+        {
+          "label": "医疗器械网络交易服务第三方平台备案：(沪)网械平台备字[2019]第00006号",
+          "link": "//fe-video-qc.xhscdn.com/fe-platform/410dce57bc12a6d7e5808060e47644fbe46f68ff.pdf",
+          "title": "小红书_医疗器械网络交易服务"
+        },
+        {
+          "label": "互联网药品信息服务资格证书：(沪)-经营性-2023-0144",
+          "link": "//fe-video-qc.xhscdn.com/fe-platform/f37a08cacc088061beb38329c387c32fc48fc6fe.pdf",
+          "title": "小红书_互联网药品信息服务"
+        },
+        {
+          "label": "违法不良信息举报电话：(021)2077 3004",
+          "link": "//www.shjbzx.cn",
+          "title": "小红书_上海市互联网举报中心"
+        },
+        {
+          "label": "上海市互联网举报中心",
+          "link": "//www.shjbzx.cn",
+          "title": "小红书_上海市互联网举报中心"
+        },
+        {
+          "label": "网上有害信息举报专区",
+          "link": "//www.12377.cn",
+          "title": "网上有害信息举报专区"
+        },
+        {
+          "label": "自营经营者信息",
+          "link": "//dc.xhscdn.com/06c2adb0-b353-11e9-9d0c-7be9ff8961c1/自营经营者信息公示.pdf",
+          "title": "小红书_沪公网安备"
+        },
+        {
+          "label": "网络文化经营许可证：沪网文(2024)1344-086号",
+          "link": "//fe-video-qc.xhscdn.com/fe-platform/00af86bc528b44a4e9d18dd07f2dba59d2e55a1b.pdf",
+          "title": "小红书_网络文化经营许可"
+        },
+        {
+          "label": "个性化推荐算法 网信算备310101216601302230019号"
+        }
+      ],
+      "disableBanAlert": "false"
+    },
+    "supportWebp": true,
+    "serverTime": 1730303823343,
+    "grayMode": false,
+    "referer": "",
+    "pwaAddDesktopPrompt": null,
+    "firstVisitUrl": null,
+    "easyAccessModalVisible": {
+      "addDesktopGuide": false,
+      "collectGuide": false,
+      "keyboardList": false,
+      "miniWindowGuide": false
+    },
+    "currentLayout": "default",
+    "fullscreenLocking": false,
+    "feedbackPopupVisible": false,
+    "trackFps": false,
+    "supportAVIF": false,
+    "imgFormatCollect": {
+      "ssr": [
+        "jpg",
+        "webp"
+      ],
+      "csr": [
+        "jpg"
+      ]
+    },
+    "isUndertake": false
+  },
+  "user": {
+    "loggedIn": true,
+    "activated": false,
+    "userInfo": {
+      "images": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo319ftcja96g605ormb0dnra5j0cf4lmo?imageView2/2/w/360/format/webp",
+      "imageb": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo319ftcja96g605ormb0dnra5j0cf4lmo?imageView2/2/w/540/format/webp",
+      "guest": false,
+      "red_id": "5407031831",
+      "user_id": "6376581b000000001f01a8b3",
+      "nickname": "吱吱酪酪拿铁",
+      "desc": "还没有简介",
+      "gender": 0,
+      "userId": "6376581b000000001f01a8b3",
+      "redId": "5407031831"
+    },
+    "follow": [],
+    "userPageData": {},
+    "activeTab": {
+      "key": 0,
+      "index": 0,
+      "query": "note",
+      "label": "笔记",
+      "lock": false,
+      "subTabs": null,
+      "feedType": 0
+    },
+    "notes": [
+      [],
+      [],
+      [],
+      []
+    ],
+    "isFetchingNotes": [
+      false,
+      false,
+      false,
+      false
+    ],
+    "tabScrollTop": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "userFetchingStatus": null,
+    "userNoteFetchingStatus": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "bannedInfo": {
+      "userId": "",
+      "serverBanned": false,
+      "code": 0,
+      "showAlert": false,
+      "reason": "",
+      "api": ""
+    },
+    "firstFetchNote": true,
+    "noteQueries": [
+      {
+        "num": 30,
+        "cursor": "",
+        "userId": "",
+        "hasMore": true,
+        "page": 1
+      },
+      {
+        "num": 30,
+        "cursor": "",
+        "userId": "",
+        "hasMore": true,
+        "page": 1
+      },
+      {
+        "num": 30,
+        "cursor": "",
+        "userId": "",
+        "hasMore": true,
+        "page": 1
+      },
+      {
+        "num": 30,
+        "cursor": "",
+        "userId": "",
+        "hasMore": true,
+        "page": 1
+      }
+    ],
+    "pageScrolled": 0,
+    "activeSubTab": null,
+    "isOwnBoard": true
+  },
+  "board": {
+    "boardListData": {},
+    "isLoadingBoardList": false,
+    "boardDetails": {},
+    "boardFeedsMap": {},
+    "boardPageStatus": "pending",
+    "userBoardList": []
+  },
+  "login": {
+    "loginMethod": null,
+    "from": "",
+    "showLogin": false,
+    "agreed": false,
+    "showTooltip": false,
+    "loginData": {
+      "phone": "",
+      "authCode": ""
+    },
+    "errors": {
+      "phone": "",
+      "authCode": ""
+    },
+    "qrData": {
+      "backend": {
+        "qrId": "",
+        "code": ""
+      },
+      "image": "",
+      "status": "un_scanned"
+    },
+    "counter": null,
+    "inAntiSpamChecking": false,
+    "recentFrom": "",
+    "isObPagesVisible": false,
+    "obPageFillInProgress": null,
+    "verificationCodeStartTime": 0,
+    "ageSelectValue": "21",
+    "hobbySelectValue": [],
+    "genderSelectValue": null,
+    "inSpamCheckSendAuthCode": false,
+    "isRegFusing": false,
+    "loginStep": 0,
+    "isLogining": false,
+    "loginPadMountedTime": 0,
+    "loginTips": "登录后推荐更懂你的笔记",
+    "isRiskUser": false,
+    "closeLoginModal": false,
+    "traceId": "",
+    "inAntiSpamCheckLogin": false
+  },
+  "feed": {
+    "query": {
+      "cursorScore": "",
+      "num": 30,
+      "refreshType": 1,
+      "noteIndex": 0,
+      "unreadBeginNoteId": "",
+      "unreadEndNoteId": "",
+      "unreadNoteCount": 0,
+      "category": "homefeed_recommend",
+      "searchKey": "",
+      "needNum": 20,
+      "imageFormats": [],
+      "needFilterImage": false
+    },
+    "isFetching": false,
+    "isError": false,
+    "feedsWrapper": null,
+    "undertakeNote": null,
+    "feeds": [],
+    "currentChannel": "homefeed_recommend",
+    "unreadInfo": {
+      "cachedFeeds": [],
+      "unreadBeginNoteId": "",
+      "unreadEndNoteId": "",
+      "unreadNoteCount": 0,
+      "timestamp": 0
+    },
+    "validIds": {
+      "noteIds": []
+    },
+    "mfStatistics": {
+      "timestamp": 0,
+      "visitTimes": 0,
+      "readFeedCount": 0
+    },
+    "channels": null,
+    "isResourceDisplay": false,
+    "isActivityEnd": false,
+    "cancelFeedRequest": false,
+    "prefetchId": null,
+    "mfRequestMetaData": {
+      "start": null,
+      "lasting": null
+    },
+    "placeholderFeeds": [],
+    "feedsCacheLogInfo": {
+      "flag": "unknown",
+      "errorCode": 0,
+      "isHitMfCache": false,
+      "SSRDocumentChecked": false,
+      "SSRDocumentCheckedSuccess": false
+    },
+    "isUsingPlaceholderFeeds": false,
+    "placeholderFeedsConsumed": false,
+    "isReplace": false,
+    "isFirstSuccessFetched": false,
+    "imgNoteFilterStatus": "unchecked",
+    "ssrRequestStatus": 5,
+    "ssrRenderExtra": ""
+  },
+  "layout": {
+    "layoutInfoReady": false,
+    "columns": 6,
+    "columnsWithSidebar": 6,
+    "gap": {
+      "vertical": 12,
+      "horizontal": 24
+    },
+    "columnWidth": 0,
+    "interactionWidth": 0,
+    "widthType": "normal",
+    "bufferRow": 3
+  },
+  "search": {
+    "state": "auto",
+    "searchContext": {
+      "keyword": "",
+      "page": 1,
+      "pageSize": 20,
+      "searchId": "",
+      "sort": "general",
+      "noteType": 0,
+      "extFlags": []
+    },
+    "feeds": [],
+    "searchValue": "",
+    "suggestions": [],
+    "userInputSugTrigger": "",
+    "keywordFrom": 2,
+    "searchRecFilter": [],
+    "searchRecFilterTag": null,
+    "searchFeedsWrapper": null,
+    "currentSearchType": "note",
+    "hintWord": {
+      "title": "搜索小红书",
+      "searchWord": "小红书网页版",
+      "hintWordRequestId": "default",
+      "type": "default"
+    },
+    "sugType": null,
+    "queryTrendingInfo": null,
+    "queryTrendingParams": {
+      "source": "ExploreNote",
+      "searchType": "trend",
+      "lastQuery": "",
+      "lastQueryTime": 0,
+      "wordRequestSituation": "FIRST_ENTER",
+      "hintWord": "",
+      "hintWordType": "",
+      "hintWordRequestId": ""
+    },
+    "queryTrendingFetched": false,
+    "oneboxInfo": {},
+    "hasMore": true,
+    "firstEnterSearchPage": true,
+    "userLists": [],
+    "fetchUserListsStatus": "auto",
+    "isFetchingUserLists": false,
+    "hasMoreUser": true,
+    "searchCplId": null,
+    "wordRequestId": null,
+    "historyList": [],
+    "searchPageHasPrevRoute": false,
+    "searchHotSpots": [],
+    "hotspotQueryNoteStep": "display",
+    "hotspotQueryNoteIndex": 0,
+    "canShowHotspotQueryNote": true,
+    "forceHotspotSearch": false,
+    "searchCardHotSpots": [],
+    "isHotspotSearch": false
+  },
+  "activity": {
+    "isOpen": false,
+    "currentUrl": "",
+    "entryList": []
+  },
+  "note": {
+    "prevRouteData": {},
+    "prevRoute": "Empty",
+    "commentTarget": {},
+    "isImgFullscreen": false,
+    "gotoPage": "",
+    "firstNoteId": "671e2efa000000002401838c",
+    "autoOpenNote": false,
+    "topCommentId": "",
+    "noteDetailMap": {
+      "671e2efa000000002401838c": {
+        "comments": {
+          "list": [],
+          "cursor": "",
+          "hasMore": true,
+          "loading": false,
+          "firstRequestFinish": false
+        },
+        "currentTime": 1730303823389,
+        "note": {
+          "xsecToken": "CBUAMz2B1Y7O2pob7nBRZegyR7GM8V4M8xgzyRbVJDGXA=",
+          "atUserList": [],
+          "time": 1730031354000,
+          "noteId": "671e2efa000000002401838c",
+          "type": "normal",
+          "title": "可以不分手吗",
+          "desc": "#OOTD穿搭分享[话题]#",
+          "lastUpdateTime": 1730031354000,
+          "ipLocation": "广东",
+          "shareInfo": {
+            "unShare": false
+          },
+          "user": {
+            "userId": "5b7a1b3a4c00350001fa5e3d",
+            "nickname": "星黛露",
+            "avatar": "https://sns-avatar-qc.xhscdn.com/avatar/1040g2jo317ukkfodka004agskldjknhtjo9n31g"
+          },
+          "interactInfo": {
+            "collected": false,
+            "collectedCount": "595",
+            "commentCount": "61",
+            "shareCount": "95",
+            "followed": true,
+            "relation": "follows",
+            "liked": false,
+            "likedCount": "2776"
+          },
+          "imageList": [
+            {
+              "width": 3566,
+              "url": "",
+              "traceId": "",
+              "urlPre": "http://sns-webpic-qc.xhscdn.com/202410302357/9fef7e14bbba8bde8400889e0ca6dac2/1040g2sg319f5f9tume004agskldjknhtkf7opeo!nd_prv_wlteh_webp_3",
+              "urlDefault": "http://sns-webpic-qc.xhscdn.com/202410302357/e7f78e2a21dce3d44f7edd153f3c0449/1040g2sg319f5f9tume004agskldjknhtkf7opeo!nd_dft_wlteh_webp_3",
+              "livePhoto": false,
+              "fileId": "",
+              "height": 4756,
+              "infoList": [
+                {
+                  "imageScene": "WB_PRV",
+                  "url": "http://sns-webpic-qc.xhscdn.com/202410302357/9fef7e14bbba8bde8400889e0ca6dac2/1040g2sg319f5f9tume004agskldjknhtkf7opeo!nd_prv_wlteh_webp_3"
+                },
+                {
+                  "imageScene": "WB_DFT",
+                  "url": "http://sns-webpic-qc.xhscdn.com/202410302357/e7f78e2a21dce3d44f7edd153f3c0449/1040g2sg319f5f9tume004agskldjknhtkf7opeo!nd_dft_wlteh_webp_3"
+                }
+              ],
+              "stream": {}
+            },
+            {
+              "traceId": "",
+              "urlDefault": "http://sns-webpic-qc.xhscdn.com/202410302357/623da05a8a2d66aa9e41778eec90db39/1040g2sg319f5f9tume0g4agskldjknhttkuhigo!nd_dft_wlteh_webp_3",
+              "livePhoto": false,
+              "stream": {},
+              "fileId": "",
+              "height": 4642,
+              "width": 3482,
+              "url": "",
+              "infoList": [
+                {
+                  "imageScene": "WB_PRV",
+                  "url": "http://sns-webpic-qc.xhscdn.com/202410302357/1fad803d1d9d1dccb64c50081bfb370b/1040g2sg319f5f9tume0g4agskldjknhttkuhigo!nd_prv_wlteh_webp_3"
+                },
+                {
+                  "imageScene": "WB_DFT",
+                  "url": "http://sns-webpic-qc.xhscdn.com/202410302357/623da05a8a2d66aa9e41778eec90db39/1040g2sg319f5f9tume0g4agskldjknhttkuhigo!nd_dft_wlteh_webp_3"
+                }
+              ],
+              "urlPre": "http://sns-webpic-qc.xhscdn.com/202410302357/1fad803d1d9d1dccb64c50081bfb370b/1040g2sg319f5f9tume0g4agskldjknhttkuhigo!nd_prv_wlteh_webp_3"
+            },
+            {
+              "stream": {},
+              "height": 5120,
+              "width": 3840,
+              "url": "",
+              "traceId": "",
+              "infoList": [
+                {
+                  "url": "http://sns-webpic-qc.xhscdn.com/202410302357/889b15e212b0772207999f96d7c9ba14/1040g2sg319f5f9tume104agskldjknhtu0au9bo!nd_prv_wlteh_webp_3",
+                  "imageScene": "WB_PRV"
+                },
+                {
+                  "imageScene": "WB_DFT",
+                  "url": "http://sns-webpic-qc.xhscdn.com/202410302357/59592f38fba3c7d513e0d700b8176b04/1040g2sg319f5f9tume104agskldjknhtu0au9bo!nd_dft_wlteh_webp_3"
+                }
+              ],
+              "urlPre": "http://sns-webpic-qc.xhscdn.com/202410302357/889b15e212b0772207999f96d7c9ba14/1040g2sg319f5f9tume104agskldjknhtu0au9bo!nd_prv_wlteh_webp_3",
+              "urlDefault": "http://sns-webpic-qc.xhscdn.com/202410302357/59592f38fba3c7d513e0d700b8176b04/1040g2sg319f5f9tume104agskldjknhtu0au9bo!nd_dft_wlteh_webp_3",
+              "fileId": "",
+              "livePhoto": false
+            },
+            {
+              "livePhoto": false,
+              "width": 3482,
+              "traceId": "",
+              "infoList": [
+                {
+                  "imageScene": "WB_PRV",
+                  "url": "http://sns-webpic-qc.xhscdn.com/202410302357/79dc35eaee582cd0796cb551b5421897/1040g2sg319f5f9tume1g4agskldjknht2if6q6o!nd_prv_wlteh_webp_3"
+                },
+                {
+                  "imageScene": "WB_DFT",
+                  "url": "http://sns-webpic-qc.xhscdn.com/202410302357/9e363e91e9a35fb357df9a0621f855c6/1040g2sg319f5f9tume1g4agskldjknht2if6q6o!nd_dft_wlteh_webp_3"
+                }
+              ],
+              "urlPre": "http://sns-webpic-qc.xhscdn.com/202410302357/79dc35eaee582cd0796cb551b5421897/1040g2sg319f5f9tume1g4agskldjknht2if6q6o!nd_prv_wlteh_webp_3",
+              "stream": {},
+              "fileId": "",
+              "height": 4642,
+              "url": "",
+              "urlDefault": "http://sns-webpic-qc.xhscdn.com/202410302357/9e363e91e9a35fb357df9a0621f855c6/1040g2sg319f5f9tume1g4agskldjknht2if6q6o!nd_dft_wlteh_webp_3"
+            },
+            {
+              "fileId": "",
+              "height": 4745,
+              "infoList": [
+                {
+                  "imageScene": "WB_PRV",
+                  "url": "http://sns-webpic-qc.xhscdn.com/202410302357/ae09cec4bdfcc5e29711ad30b5598b02/1040g2sg319f5f9tume204agskldjknhtgvde3c8!nd_prv_wlteh_webp_3"
+                },
+                {
+                  "url": "http://sns-webpic-qc.xhscdn.com/202410302357/00c0681d230d5528f3ed3207b57c0fff/1040g2sg319f5f9tume204agskldjknhtgvde3c8!nd_dft_wlteh_webp_3",
+                  "imageScene": "WB_DFT"
+                }
+              ],
+              "urlPre": "http://sns-webpic-qc.xhscdn.com/202410302357/ae09cec4bdfcc5e29711ad30b5598b02/1040g2sg319f5f9tume204agskldjknhtgvde3c8!nd_prv_wlteh_webp_3",
+              "urlDefault": "http://sns-webpic-qc.xhscdn.com/202410302357/00c0681d230d5528f3ed3207b57c0fff/1040g2sg319f5f9tume204agskldjknhtgvde3c8!nd_dft_wlteh_webp_3",
+              "livePhoto": false,
+              "width": 3559,
+              "url": "",
+              "traceId": "",
+              "stream": {}
+            }
+          ],
+          "tagList": [
+            {
+              "type": "topic",
+              "id": "5fdb5672000000000100a6a2",
+              "name": "OOTD穿搭分享"
+            }
+          ]
+        }
+      }
+    },
+    "serverRequestInfo": {
+      "state": "success",
+      "errorCode": 0,
+      "errMsg": ""
+    },
+    "volume": 0,
+    "recommendVideoMap": {},
+    "videoFeedType": "note_source",
+    "rate": 1,
+    "currentNoteId": "671e2efa000000002401838c",
+    "mediaWidth": 450,
+    "noteHeight": 800
+  },
+  "nioStore": {
+    "collectionListDataSource": null,
+    "error": null
+  },
+  "notification": {
+    "isFetching": false,
+    "activeTabKey": -1,
+    "notificationCount": {
+      "unreadCount": 0,
+      "mentions": 0,
+      "likes": 0,
+      "connections": 0
+    },
+    "notificationMap": {
+      "mentions": {
+        "messageList": [],
+        "hasMore": true,
+        "cursor": ""
+      },
+      "likes": {
+        "messageList": [],
+        "hasMore": true,
+        "cursor": ""
+      },
+      "connections": {
+        "messageList": [],
+        "hasMore": true,
+        "cursor": ""
+      }
+    }
+  },
+  "redMoji": {
+    "mojiData": {
+      "version": "",
+      "redmojiTabs": [],
+      "redmojiMap": {}
+    }
+  }
+}

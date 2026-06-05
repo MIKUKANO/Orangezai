@@ -1,0 +1,61 @@
+{
+  "name": "orangezai",
+  "version": "1.0.0",
+  "author": "RrOrange, TimeRainStarSky, Yoimiya-Kokomi, Le-niao",
+  "description": "Bot",
+  "private": true,
+  "main": "./index.js",
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "plugins/**"
+  ],
+  "scripts": {
+    "app": "node .",
+    "dev": "node . dev",
+    "web": "node lib/tools/web.js",
+    "start": "pm2 start config/pm2.yaml",
+    "stop": "pm2 stop config/pm2.yaml",
+    "restart": "pm2 restart config/pm2.yaml",
+    "log": "pm2 log --lines 100",
+    "browser:install": "playwright install chromium"
+  },
+  "dependencies": {
+    "art-template": "^4.13.2",
+    "chalk": "^5.3.0",
+    "chokidar": "^3.6.0",
+    "express": "^4.19.2",
+    "express-art-template": "^1.0.1",
+    "file-type": "^19.4.1",
+    "level": "^8.0.1",
+    "lodash": "^4.17.21",
+    "log4js": "^6.9.1",
+    "md5": "file:./lib/modules/md5",
+    "mime": "^4.0.4",
+    "moment": "^2.30.1",
+    "node-fetch": "file:./lib/modules/node-fetch",
+    "node-schedule": "^2.1.1",
+    "oicq": "file:./lib/modules/oicq",
+    "playwright": "^1.58.2",
+    "pm2": "^5.4.2",
+    "puppeteer": "workspace:*",
+    "redis": "^4.7.0",
+    "ulid": "^2.3.0",
+    "ws": "^8.18.0",
+    "yaml": "^2.5.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-promise": "^6.6.0"
+  },
+  "imports": {
+    "#miao": "./plugins/miao-plugin/components/index.js",
+    "#miao.models": "./plugins/miao-plugin/models/index.js"
+  },
+  "patchedDependencies": {
+    "log4js@6.9.1": "lib/modules/log4js.patch"
+  }
+}

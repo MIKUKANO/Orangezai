@@ -1,0 +1,28 @@
+{
+  "logLevel": "info",
+  "http": {
+    "host": "0.0.0.0",
+    "port": 7005,
+    "token": "123456"
+  },
+  "ws": {
+    "enable": true,
+    "token": "123456",
+    "path": "/ws",
+    "list": [
+      {
+        "url": "ws://127.0.0.1:7000/puppeteer",
+        "token": "123456"
+      }
+    ]
+  },
+  "browserCount": 1,
+  "args": [
+    "--enable-gpu",
+    "--no-sandbox",
+    "--disable-setuid-sandbox",
+    "--no-zygote",
+    "--disable-extensions",
+    "--disable-dev-shm-usage"
+  ]
+}

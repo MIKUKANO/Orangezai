@@ -1,0 +1,9 @@
+*
+!.gitignore
+
+!puppeteer
+!puppeteer/**
+puppeteer/config.yaml
+!playwright
+!playwright/**
+playwright/config.yaml

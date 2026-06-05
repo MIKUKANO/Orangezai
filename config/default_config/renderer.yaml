@@ -1,0 +1,2 @@
+# 渲染后端, 默认为 playwright，兼容保留 puppeteer
+name: playwright
