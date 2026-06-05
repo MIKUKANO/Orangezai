@@ -6,8 +6,6 @@
 
 🍊崽 Bot，支持多账号，支持协议端：OneBotv11、ComWeChat、GSUIDCore、ICQQ、QQBot、QQ频道、微信、KOOK、Telegram、Discord、OPQBot、Lagrange
 
-仓库地址：[zhiyu1998/Orangezai](https://github.com/zhiyu1998/Orangezai)
-
 交流群：`575663150`
 
 </div>
