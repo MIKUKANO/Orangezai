@@ -5,6 +5,7 @@ let insing = false
 const list = {
     "genshin": "https://gitee.com/TimeRainStarSky/Yunzai-genshin",
     "R-Plugin": "https://gitee.com/kyrzy0416/rconsole-plugin",
+    "neko-status-Plugin": "https://gh-proxy.com/https://github.com/erzaozi/neko-status-plugin",
     "Guoba-Plugin": "https://gitee.com/guoba-yunzai/guoba-plugin",
     "Lagrange-Plugin": "https://gitee.com/TimeRainStarSky/Yunzai-Lagrange-Plugin",
     "Telegram-Plugin": "https://gitee.com/TimeRainStarSky/Yunzai-Telegram-Plugin",
