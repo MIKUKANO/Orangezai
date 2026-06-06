@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test"
-import { buildForceUpdateCommands, getGitErrorUrl, handleGitError } from "../plugins/other/common.js"
+import { buildForceUpdateCommands, getGitErrorUrl, handleGitError } from "../lib/tools/plugin-common.js"
 
 describe("other plugin common helpers", () => {
     test("buildForceUpdateCommands uses fetch and hard reset", () => {

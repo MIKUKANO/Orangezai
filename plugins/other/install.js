@@ -1,11 +1,12 @@
+import fs from "node:fs/promises"
 import { Restart } from "./restart.js"
 import { buildBunInstallCommand, execPluginCommand, handleGitError } from "../../lib/tools/plugin-common.js"
 
 let insing = false
 const list = {
     "genshin": "https://gitee.com/TimeRainStarSky/Yunzai-genshin",
-    "R-Plugin": "https://gitee.com/kyrzy0416/rconsole-plugin",
-    "neko-status-Plugin": "https://gh-proxy.com/https://github.com/erzaozi/neko-status-plugin",
+    "rconsole-plugin": "https://gitee.com/kyrzy0416/rconsole-plugin",
+    "neko-status-plugin": "https://gh-proxy.com/https://github.com/erzaozi/neko-status-plugin",
     "Guoba-Plugin": "https://gitee.com/guoba-yunzai/guoba-plugin",
     "Lagrange-Plugin": "https://gitee.com/TimeRainStarSky/Yunzai-Lagrange-Plugin",
     "Telegram-Plugin": "https://gitee.com/TimeRainStarSky/Yunzai-Telegram-Plugin",
@@ -18,6 +19,9 @@ const list = {
 }
 const map = {}
 for (const i in list) map[i.replace(/-[Pp]lugin$/, "")] = i
+const legacyPaths = {
+    "neko-status-plugin": "plugins/neko-status-Plugin"
+}
 
 export class install extends plugin {
     constructor() {
@@ -57,6 +61,14 @@ export class install extends plugin {
         }
 
         const path = `plugins/${name}`
+        const legacyPath = legacyPaths[name]
+        if (legacyPath && (await Bot.fsStat(legacyPath))) {
+            if (await Bot.fsStat(path)) {
+                await this.reply(`${name} 插件已安装，但旧目录 ${legacyPath} 仍存在，请手动删除旧目录后重启`)
+                return false
+            }
+            await fs.rename(legacyPath, path)
+        }
         if (await Bot.fsStat(path)) {
             await this.reply(`${name} 插件已安装`)
             return false
