@@ -1,5 +1,5 @@
 import { Restart } from "./restart.js"
-import { buildBunInstallCommand, execPluginCommand, handleGitError } from "./common.js"
+import { buildBunInstallCommand, execPluginCommand, handleGitError } from "../../lib/tools/plugin-common.js"
 
 let insing = false
 const list = {

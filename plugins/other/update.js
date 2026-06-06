@@ -1,6 +1,6 @@
 import fs from "node:fs/promises"
 import { Restart } from "./restart.js"
-import { buildBunInstallCommand, buildForceUpdateCommands, execPluginCommand, handleGitError } from "./common.js"
+import { buildBunInstallCommand, buildForceUpdateCommands, execPluginCommand, handleGitError } from "../../lib/tools/plugin-common.js"
 
 let uping = false
 
