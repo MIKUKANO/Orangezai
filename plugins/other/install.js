@@ -1,4 +1,5 @@
 import { Restart } from "./restart.js"
+import { buildBunInstallCommand, execPluginCommand, handleGitError } from "./common.js"
 
 let insing = false
 const list = {
@@ -72,17 +73,12 @@ export class install extends plugin {
 
             if (ret.error) {
                 logger.mark(`${this.e.logFnc} ${name} 插件安装错误`)
-                this.gitErr(name, ret.error.message, ret.stdout)
+                await this.gitErr(name, ret.error.message, ret.stdout)
                 return false
             }
 
             if (await Bot.fsStat(`${path}/package.json`)) {
-                const installRet = await Bot.exec([
-                    "bun",
-                    "install",
-                    "--filter",
-                    `./${path}`
-                ])
+                const installRet = await execPluginCommand(buildBunInstallCommand([`./${path}`]))
                 if (installRet.error) {
                     await this.reply(
                         `${name} 插件依赖安装错误\n${installRet.error}\n${installRet.stdout}\n${installRet.stderr}`
@@ -106,18 +102,13 @@ export class install extends plugin {
         }
     }
 
-    gitErrUrl(error) {
-        return error
-            .replace(/(Cloning into|正克隆到)\s*'.+?'/g, "")
-            .match(/'(.+?)'/g)[0]
-            .replace(/'(.+?)'/, "$1")
-    }
-
     async gitErr(name, error, stdout) {
-        if (/unable to access|无法访问/.test(error)) await this.reply(`远程仓库连接错误：${this.gitErrUrl(error)}`)
-        else if (/not found|未找到|does not (exist|appear)|不存在|Authentication failed|鉴权失败/.test(error))
-            await this.reply(`远程仓库地址错误：${this.gitErrUrl(error)}`)
-        else await this.reply(`${name} 插件安装错误\n${error}\n${stdout}`)
+        return handleGitError({
+            error,
+            stdout,
+            reply: msg => this.reply(msg),
+            unknownMessage: `${name} 插件安装错误\n${error}\n${stdout}`
+        })
     }
 
     restart() {

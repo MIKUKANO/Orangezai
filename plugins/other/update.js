@@ -1,5 +1,6 @@
 import fs from "node:fs/promises"
 import { Restart } from "./restart.js"
+import { buildBunInstallCommand, execPluginCommand, handleGitError } from "./common.js"
 
 let uping = false
 
@@ -47,8 +48,7 @@ export class update extends plugin {
     }
 
     exec(cmd, plugin, opts = {}) {
-        if (plugin) opts.cwd = `plugins/${plugin}`
-        return Bot.exec(cmd, opts)
+        return execPluginCommand(cmd, plugin, opts)
     }
 
     async update() {
@@ -174,22 +174,15 @@ export class update extends plugin {
         return urls
     }
 
-    gitErrUrl(error) {
-        return error.match(/'(.+?)'/g)[0].replace(/'(.+?)'/, "$1")
-    }
-
     async gitErr(plugin, stdout, error) {
-        if (/unable to access|无法访问/.test(error))
-            await this.replyUpdate(`远程仓库连接错误：${this.gitErrUrl(error)}`, "error")
-        else if (/not found|未找到|does not (exist|appear)|不存在|Authentication failed|鉴权失败/.test(error))
-            await this.replyUpdate(`远程仓库地址错误：${this.gitErrUrl(error)}`, "error")
-        else if (/be overwritten by merge|被合并操作覆盖/.test(error) || /Merge conflict|合并冲突/.test(stdout))
-            await this.replyUpdate(`${error}\n${stdout}\n若修改过文件请手动更新，否则发送 #强制更新${plugin}`, "error")
-        else if (/divergent branches|偏离的分支/.test(error)) {
-            const ret = await this.exec("git pull --rebase", plugin)
-            if (!ret.error && /Successfully rebased|成功变基/.test(ret.stdout + ret.stderr)) return true
-            await this.replyUpdate(`${error}\n${stdout}\n若修改过文件请手动更新，否则发送 #强制更新${plugin}`, "error")
-        } else await this.replyUpdate(`${error}\n${stdout}\n未知错误，可尝试发送 #强制更新${plugin}`, "error")
+        return handleGitError({
+            error,
+            stdout,
+            reply: msg => this.replyUpdate(msg, "error"),
+            conflictMessage: `${error}\n${stdout}\n若修改过文件请手动更新，否则发送 #强制更新${plugin}`,
+            unknownMessage: `${error}\n${stdout}\n未知错误，可尝试发送 #强制更新${plugin}`,
+            retryRebase: () => this.exec("git pull --rebase", plugin)
+        })
     }
 
     async updateAll() {
@@ -235,10 +228,7 @@ export class update extends plugin {
         const pluginFilters = plugins.filter(Boolean).map(plugin => `./plugins/${plugin}`)
 
         if (hasRoot) {
-            const ret = await this.exec([
-                "bun",
-                "install"
-            ])
+            const ret = await this.exec(buildBunInstallCommand())
             if (ret.error) {
                 await this.replyUpdate(`依赖更新失败\n${ret.error}\n${ret.stdout}\n${ret.stderr}`, "error")
                 return false
@@ -246,13 +236,7 @@ export class update extends plugin {
         }
 
         if (pluginFilters.length) {
-            const command = [
-                "bun",
-                "install"
-            ]
-            for (const filter of pluginFilters) command.push("--filter", filter)
-
-            const ret = await this.exec(command)
+            const ret = await this.exec(buildBunInstallCommand(pluginFilters))
             if (ret.error) {
                 await this.replyUpdate(`插件依赖更新失败\n${ret.error}\n${ret.stdout}\n${ret.stderr}`, "error")
                 return false
