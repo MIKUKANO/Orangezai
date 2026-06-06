@@ -3,15 +3,15 @@
 ## 项目结构与模块组织
 `app.js` 是进程入口，前台模式下会负责拉起和重启 Bot；`index.js` 作为包入口导出。核心运行时代码位于 `lib/`，是贡献者最常接触的目录：
 
-- `lib/bot.js`：Bot 主运行时入口，负责组装服务模块、启动流程、基础工具方法和多账号聚合能力。
-- `lib/bot/`：`bot.js` 的内部服务拆分目录。`file.js` 处理文件 URL 和 Buffer/下载逻辑，`message.js` 处理事件增强、消息路由与转发，`server.js` 处理 HTTP/WebSocket 服务，`store.js` 处理基于 LevelDB 的 Map 持久化。
+- `lib/bot.js`：Bot 主运行时入口，负责组装服务模块、启动流程和多账号聚合能力。通用能力通过 `apply*Service` 挂载到 `Orangezai.prototype`，保持 `Bot.makeLog`、`Bot.String` 等运行时 API 可用。
+- `lib/bot/`：`bot.js` 的内部服务拆分目录。`file.js` 处理文件 URL 和 Buffer/下载逻辑，`util.js` 处理日志格式化、字符串序列化、`makeLog`、`makeError`、文件系统辅助和命令执行工具，`message.js` 处理事件增强、消息路由与转发，`server.js` 处理 HTTP/WebSocket 服务，`store.js` 处理基于 LevelDB 的 Map 持久化。
 - `lib/config/`：配置系统。`config.js` 负责合并 `default_config` 与本地配置并监听热更新，`init.js` 负责启动初始化，`log.js` 和 `redis.js` 分别处理日志与 Redis 连接。
 - `lib/events/`：按事件类型拆分的事件入口，例如 `message.js`、`notice.js`、`request.js`、`connect.js`、`online.js`。
 - `lib/listener/`：事件监听器加载层，负责把 `lib/events/` 下的处理器注册到运行时。
 - `lib/plugins/`：插件运行时核心。`loader.js` 负责扫描 `plugins/`、热重载和任务收集，`plugin.js` 提供插件基类，`handler.js` 和 `runtime.js` 处理上下文与调用链。
 - `lib/renderer/`：渲染器抽象层，`loader.js` 从 `renderers/<name>/index.js` 动态加载后端，`Renderer.js` 提供统一接口。
 - `lib/browser/`、`lib/puppeteer/`：浏览器实例和渲染相关能力。
-- `lib/tools/`：开发和运行辅助脚本，如依赖补装、Web 工具和部署脚本。
+- `lib/tools/`：开发和运行辅助脚本，如依赖补装、插件安装/更新共享 helper、Web 工具和部署脚本。Bot 实例方法优先放在 `lib/bot/` 服务模块中，通过 `apply*Service` 挂载。
 - `lib/modules/`：本地补丁模块与私有依赖包装，如 `md5`、`node-fetch`、`oicq` 和 `log4js.patch`。
 
 插件从 `plugins/` 动态发现，既支持 `plugins/<name>/index.js`，也支持插件目录下直接放置多个 `.js` 文件。内置插件分组主要包括 `plugins/adapter`、`plugins/other` 和 `plugins/system`。
