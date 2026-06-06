@@ -73,7 +73,7 @@
 统一使用 Biome 进行格式化和静态检查。保持 4 空格缩进、双引号、无分号，单行长度尽量控制在 120 列以内。目录名和模块文件名以小写为主，加载器类文件沿用现有命名，如 `loader.js`、`handler.js`、`runtime.js`。新增代码应保持 ESM 风格，并遵循现有运行时全局约定，例如 `Bot`、`Renderer`、`plugin`、`redis`，不要随意引入新的全局模式。
 
 ## 测试说明
-当前仓库已有最小测试目录 `tests/`，目前包含 `plugin-context.test.js`，用于覆盖 `lib/plugins/plugin.js` 的上下文状态机。提交前至少运行 `bun run check`，涉及底层运行时或插件交互逻辑时同步运行 `bun run test`。修改插件或渲染器时，重点确认加载是否成功、命令匹配是否正常、配置读取是否符合预期。
+当前仓库已有最小测试目录 `tests/`，目前包含 `plugin-context.test.js` 和 `other-common.test.js`，覆盖插件上下文状态机以及 `plugins/other/common.js` 的共享辅助逻辑。提交前至少运行 `bun run check`；只要改动了底层运行时、共享 helper、插件交互链路或更新/安装逻辑，就应一并运行 `bun run test`。把 `bun test` 当成日常检查的一部分，而不是只在怀疑出错时才运行。修改插件或渲染器时，重点确认加载是否成功、命令匹配是否正常、配置读取是否符合预期。
 
 ## 提交与 Pull Request 规范
 现有提交历史以简短、直接的标题为主，常见中文描述，也有 `chore:` 这类前缀。提交信息应聚焦单一改动，例如 `fix: plugin hot reload path`、`优化渲染器加载日志`。PR 需要说明改动摘要、影响目录、是否涉及配置或依赖变更，以及明确的人工验证步骤。涉及网页渲染、界面输出或 Bot 行为变更时，附上截图或关键日志更合适。
