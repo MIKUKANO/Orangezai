@@ -1,6 +1,6 @@
 import fs from "node:fs/promises"
 import { Restart } from "./restart.js"
-import { buildBunInstallCommand, execPluginCommand, handleGitError } from "./common.js"
+import { buildBunInstallCommand, buildForceUpdateCommands, execPluginCommand, handleGitError } from "./common.js"
 
 let uping = false
 
@@ -51,6 +51,32 @@ export class update extends plugin {
         return execPluginCommand(cmd, plugin, opts)
     }
 
+    async execSteps(commands = [], plugin = "") {
+        const results = []
+        for (const command of commands) {
+            const ret = await this.exec(command, plugin)
+            results.push(ret)
+            if (ret.error) {
+                return {
+                    ...ret,
+                    stdout: results
+                        .map(item => item.stdout)
+                        .filter(Boolean)
+                        .join("\n"),
+                    stderr: results
+                        .map(item => item.stderr)
+                        .filter(Boolean)
+                        .join("\n")
+                }
+            }
+        }
+        return results.at(-1) || {
+            error: null,
+            stdout: "",
+            stderr: ""
+        }
+    }
+
     async update() {
         if (!this.e.isMaster) return false
         if (uping) {
@@ -94,17 +120,19 @@ export class update extends plugin {
     async runUpdate(plugin = "") {
         let cm = "git pull"
         let type = "更新"
+        let commandRunner = () => this.exec(cm, plugin)
         if (!plugin) cm = `git checkout package.json && ${cm}`
 
         if (this.e.msg.includes("强制")) {
             type = "强制更新"
-            cm = `git reset --hard ${await this.getRemoteBranch(true, plugin)} && git pull --rebase`
+            const remoteBranch = await this.getRemoteBranch(true, plugin)
+            commandRunner = () => this.execSteps(buildForceUpdateCommands(remoteBranch), plugin)
         }
         this.oldCommitId = await this.getCommitId(plugin)
 
         logger.mark(`${this.e.logFnc} 开始${type} ${this.typeName}`)
         if (!this.quiet) await this.replyUpdate(`开始${type} ${this.typeName}`)
-        const ret = await this.exec(cm, plugin)
+        const ret = await commandRunner()
 
         if (ret.error && !(await this.gitErr(plugin, ret.stdout, ret.error.message))) {
             logger.mark(`${this.e.logFnc} 更新失败 ${this.typeName}`)

@@ -19,6 +19,22 @@ export function buildBunInstallCommand(filters = []) {
     return command
 }
 
+export function buildForceUpdateCommands(remoteBranch = "") {
+    return [
+        [
+            "git",
+            "fetch",
+            "--prune"
+        ],
+        [
+            "git",
+            "reset",
+            "--hard",
+            remoteBranch
+        ]
+    ]
+}
+
 export function getGitErrorUrl(error = "") {
     const cleaned = String(error).replace(/(Cloning into|正克隆到)\s*'.+?'/g, "")
     return cleaned.match(/'(.+?)'/)?.[1] || ""
