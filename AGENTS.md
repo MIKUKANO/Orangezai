@@ -23,9 +23,11 @@
 - `update.js`：负责更新相关命令和仓库同步逻辑。
 - `sendLog.js`：用于日志或错误信息回传。
 - `version.js`：处理 `#版本` 等版本展示能力。
-- `common.js`：`install.js` 和 `update.js` 共享的命令执行、`bun install` 拼装和 git 错误处理辅助函数。
+- `lib/tools/plugin-common.js`：`install.js` 和 `update.js` 共享的命令执行、`bun install` 拼装和 git 错误处理辅助函数。
 
 修改 `plugins/other/` 下文件时，优先保持“单文件单职责”模式；新增命令应沿用现有 `rule`、`permission`、`reply` 和日志输出风格。
+
+注意：`lib/plugins/loader.js` 会把没有 `index.js` 的 `plugins/<目录>/` 下所有直属 `.js` 文件都当作插件入口加载。`plugins/adapter`、`plugins/other`、`plugins/system` 以及其他采用“多文件插件”模式的目录里，不要放共享 helper、测试桩或仅供导入的模块；这类文件应放到 `lib/tools/` 或其他不会被插件扫描的位置。
 
 渲染后端位于 `renderers/<name>/`，每个目录通过 `index.js` 注册。共享工作区包位于 `packages/`，当前包含 `packages/puppeteer`。默认配置放在 `config/default_config/`，本地可编辑配置放在 `config/config/`。静态网页资源位于 `resources/http/`。`logs/`、`data/`、`temp/` 属于运行产物，不应作为源码修改目标。
 
@@ -73,7 +75,7 @@
 统一使用 Biome 进行格式化和静态检查。保持 4 空格缩进、双引号、无分号，单行长度尽量控制在 120 列以内。目录名和模块文件名以小写为主，加载器类文件沿用现有命名，如 `loader.js`、`handler.js`、`runtime.js`。新增代码应保持 ESM 风格，并遵循现有运行时全局约定，例如 `Bot`、`Renderer`、`plugin`、`redis`，不要随意引入新的全局模式。
 
 ## 测试说明
-当前仓库已有最小测试目录 `tests/`，目前包含 `plugin-context.test.js` 和 `other-common.test.js`，覆盖插件上下文状态机以及 `plugins/other/common.js` 的共享辅助逻辑。提交前至少运行 `bun run check`；只要改动了底层运行时、共享 helper、插件交互链路或更新/安装逻辑，就应一并运行 `bun run test`。把 `bun test` 当成日常检查的一部分，而不是只在怀疑出错时才运行。修改插件或渲染器时，重点确认加载是否成功、命令匹配是否正常、配置读取是否符合预期。
+当前仓库已有最小测试目录 `tests/`，目前包含 `plugin-context.test.js` 和 `other-common.test.js`，覆盖插件上下文状态机以及 `lib/tools/plugin-common.js` 的共享辅助逻辑。提交前至少运行 `bun run check`；只要改动了底层运行时、共享 helper、插件交互链路或更新/安装逻辑，就应一并运行 `bun run test`。把 `bun test` 当成日常检查的一部分，而不是只在怀疑出错时才运行。修改插件或渲染器时，重点确认加载是否成功、命令匹配是否正常、配置读取是否符合预期。
 
 ## 提交与 Pull Request 规范
 现有提交历史以简短、直接的标题为主，常见中文描述，也有 `chore:` 这类前缀。提交信息应聚焦单一改动，例如 `fix: plugin hot reload path`、`优化渲染器加载日志`。PR 需要说明改动摘要、影响目录、是否涉及配置或依赖变更，以及明确的人工验证步骤。涉及网页渲染、界面输出或 Bot 行为变更时，附上截图或关键日志更合适。
