@@ -39,7 +39,7 @@
     "scripts": {
         "app": "node .",
         "dev": "node . dev",
-        "web": "node lib/tools/web.js",
+        "test": "bun test",
         "start": "pm2 start config/pm2.yaml",
         "stop": "pm2 stop Orangezai",
         "restart": "pm2 restart Orangezai",

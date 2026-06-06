@@ -3,7 +3,8 @@
 ## 项目结构与模块组织
 `app.js` 是进程入口，前台模式下会负责拉起和重启 Bot；`index.js` 作为包入口导出。核心运行时代码位于 `lib/`，是贡献者最常接触的目录：
 
-- `lib/bot.js`：Bot 主类，负责 HTTP/WebSocket 服务、事件分发、文件 URL、日志、消息发送和多账号选择逻辑。
+- `lib/bot.js`：Bot 主运行时入口，负责组装服务模块、启动流程、基础工具方法和多账号聚合能力。
+- `lib/bot/`：`bot.js` 的内部服务拆分目录。`file.js` 处理文件 URL 和 Buffer/下载逻辑，`message.js` 处理事件增强、消息路由与转发，`server.js` 处理 HTTP/WebSocket 服务，`store.js` 处理基于 LevelDB 的 Map 持久化。
 - `lib/config/`：配置系统。`config.js` 负责合并 `default_config` 与本地配置并监听热更新，`init.js` 负责启动初始化，`log.js` 和 `redis.js` 分别处理日志与 Redis 连接。
 - `lib/events/`：按事件类型拆分的事件入口，例如 `message.js`、`notice.js`、`request.js`、`connect.js`、`online.js`。
 - `lib/listener/`：事件监听器加载层，负责把 `lib/events/` 下的处理器注册到运行时。
@@ -22,6 +23,7 @@
 - `update.js`：负责更新相关命令和仓库同步逻辑。
 - `sendLog.js`：用于日志或错误信息回传。
 - `version.js`：处理 `#版本` 等版本展示能力。
+- `common.js`：`install.js` 和 `update.js` 共享的命令执行、`bun install` 拼装和 git 错误处理辅助函数。
 
 修改 `plugins/other/` 下文件时，优先保持“单文件单职责”模式；新增命令应沿用现有 `rule`、`permission`、`reply` 和日志输出风格。
 
@@ -36,6 +38,7 @@
 - `bun run start` / `bun run stop` / `bun run restart`：通过 `config/pm2.yaml` 管理 PM2 进程。
 - `bun run log`：查看最近的 PM2 日志。
 - `bun run browser:install`：安装 Playwright Chromium，供渲染器使用。
+- `bun run test`：运行当前最小自动化测试。
 - `bun run check` / `bun run check:fix`：运行 Biome 检查，可选自动修复。
 - `bun run format`：使用 Biome 格式化代码。
 
@@ -70,7 +73,7 @@
 统一使用 Biome 进行格式化和静态检查。保持 4 空格缩进、双引号、无分号，单行长度尽量控制在 120 列以内。目录名和模块文件名以小写为主，加载器类文件沿用现有命名，如 `loader.js`、`handler.js`、`runtime.js`。新增代码应保持 ESM 风格，并遵循现有运行时全局约定，例如 `Bot`、`Renderer`、`plugin`、`redis`，不要随意引入新的全局模式。
 
 ## 测试说明
-当前仓库没有自带的 `tests/` 目录或正式自动化测试套件。提交前至少运行 `bun run check`，并结合 `bun run dev` 做针对性人工验证。修改插件或渲染器时，重点确认加载是否成功、命令匹配是否正常、配置读取是否符合预期。
+当前仓库已有最小测试目录 `tests/`，目前包含 `plugin-context.test.js`，用于覆盖 `lib/plugins/plugin.js` 的上下文状态机。提交前至少运行 `bun run check`，涉及底层运行时或插件交互逻辑时同步运行 `bun run test`。修改插件或渲染器时，重点确认加载是否成功、命令匹配是否正常、配置读取是否符合预期。
 
 ## 提交与 Pull Request 规范
 现有提交历史以简短、直接的标题为主，常见中文描述，也有 `chore:` 这类前缀。提交信息应聚焦单一改动，例如 `fix: plugin hot reload path`、`优化渲染器加载日志`。PR 需要说明改动摘要、影响目录、是否涉及配置或依赖变更，以及明确的人工验证步骤。涉及网页渲染、界面输出或 Bot 行为变更时，附上截图或关键日志更合适。
