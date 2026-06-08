@@ -123,20 +123,14 @@ class PuppeteerCompatPage {
     }
 
     async waitForFunction(fn, options = {}, ...args) {
+        const waitOptions = normalizeWaitOptions(options)
         if (args.length <= 1) {
-            return this.page.waitForFunction(fn, args[0], normalizeWaitOptions(options))
+            return this.page.waitForFunction(fn, args[0], waitOptions)
         }
-        return this.page.waitForFunction(
-            ({ fnText, fnArgs }) => {
-                const pageFn = globalThis.eval(`(${fnText})`)
-                return pageFn(...fnArgs)
-            },
-            {
-                fnText: fn.toString(),
-                fnArgs: args
-            },
-            normalizeWaitOptions(options)
-        )
+        if (typeof fn !== "function") {
+            return this.page.waitForFunction(fn, args[0], waitOptions)
+        }
+        return this.page.waitForFunction(createVariadicFunction(fn), args, waitOptions)
     }
 
     async waitForNavigation(options = {}) {
@@ -301,10 +295,32 @@ function normalizeNavigationOptions(options) {
     const navigationOptions = {
         ...options
     }
-    if (navigationOptions.waitUntil === "networkidle0" || navigationOptions.waitUntil === "networkidle2") {
-        navigationOptions.waitUntil = "networkidle"
+    const waitUntil = normalizeWaitUntil(navigationOptions.waitUntil)
+    if (waitUntil) {
+        navigationOptions.waitUntil = waitUntil
+    } else {
+        delete navigationOptions.waitUntil
     }
     return navigationOptions
+}
+
+function normalizeWaitUntil(waitUntil) {
+    if (Array.isArray(waitUntil)) {
+        const normalized = waitUntil.map(normalizeWaitUntilValue).filter(Boolean)
+        return normalized.includes("networkidle") ? "networkidle" : normalized.at(-1)
+    }
+    return normalizeWaitUntilValue(waitUntil)
+}
+
+function normalizeWaitUntilValue(waitUntil) {
+    if (waitUntil === "networkidle0" || waitUntil === "networkidle2") {
+        return "networkidle"
+    }
+    return waitUntil
+}
+
+function createVariadicFunction(fn) {
+    return new Function("args", `return (${fn.toString()})(...args)`)
 }
 
 function normalizeScreenshotOptions(options) {
