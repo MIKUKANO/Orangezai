@@ -16,6 +16,10 @@ class PuppeteerCompatElementHandle {
     async evaluate(fn, ...args) {
         return this.locator.evaluate(fn, ...args)
     }
+
+    async evaluateHandle(fn, ...args) {
+        return this.locator.evaluateHandle(fn, ...args)
+    }
 }
 
 class PuppeteerCompatPage {
@@ -24,13 +28,7 @@ class PuppeteerCompatPage {
     }
 
     async goto(url, options = {}) {
-        const gotoOptions = {
-            ...options
-        }
-        if (gotoOptions.waitUntil === "networkidle2") {
-            gotoOptions.waitUntil = "networkidle"
-        }
-        return this.page.goto(url, gotoOptions)
+        return this.page.goto(url, normalizeNavigationOptions(options))
     }
 
     async $(selector) {
@@ -76,13 +74,7 @@ class PuppeteerCompatPage {
     }
 
     async setContent(html, options = {}) {
-        const setContentOptions = {
-            ...options
-        }
-        if (setContentOptions.waitUntil === "networkidle2") {
-            setContentOptions.waitUntil = "networkidle"
-        }
-        return this.page.setContent(html, setContentOptions)
+        return this.page.setContent(html, normalizeNavigationOptions(options))
     }
 
     async content() {
@@ -108,7 +100,10 @@ class PuppeteerCompatPage {
     }
 
     async setViewport(viewport) {
-        return this.page.setViewportSize(normalizeViewport(viewport))
+        await this.page.setViewportSize(normalizeViewportSize(viewport))
+        if (viewport.deviceScaleFactor) {
+            await this.setDeviceMetrics(viewport).catch(() => {})
+        }
     }
 
     async screenshot(options = {}) {
@@ -119,8 +114,87 @@ class PuppeteerCompatPage {
         return this.page.evaluate(fn, ...args)
     }
 
+    async evaluateHandle(fn, ...args) {
+        return this.page.evaluateHandle(fn, ...args)
+    }
+
+    async waitForTimeout(timeout) {
+        return this.page.waitForTimeout(timeout)
+    }
+
+    async waitForFunction(fn, options = {}, ...args) {
+        if (args.length <= 1) {
+            return this.page.waitForFunction(fn, args[0], normalizeWaitOptions(options))
+        }
+        return this.page.waitForFunction(
+            ({ fnText, fnArgs }) => {
+                const pageFn = globalThis.eval(`(${fnText})`)
+                return pageFn(...fnArgs)
+            },
+            {
+                fnText: fn.toString(),
+                fnArgs: args
+            },
+            normalizeWaitOptions(options)
+        )
+    }
+
+    async waitForNavigation(options = {}) {
+        return this.page.waitForNavigation(normalizeNavigationOptions(options))
+    }
+
+    setDefaultTimeout(timeout) {
+        return this.page.setDefaultTimeout(timeout)
+    }
+
+    setDefaultNavigationTimeout(timeout) {
+        return this.page.setDefaultNavigationTimeout(timeout)
+    }
+
+    get keyboard() {
+        return this.page.keyboard
+    }
+
+    get mouse() {
+        return this.page.mouse
+    }
+
+    on(event, handler) {
+        this.page.on(event, handler)
+        return this
+    }
+
+    once(event, handler) {
+        this.page.once(event, handler)
+        return this
+    }
+
+    off(event, handler) {
+        this.page.off(event, handler)
+        return this
+    }
+
     async close() {
         return this.page.close()
+    }
+
+    async setDeviceMetrics(viewport) {
+        const client = await this.page.context().newCDPSession(this.page)
+        return client.send("Emulation.setDeviceMetricsOverride", {
+            width: Math.max(Math.ceil(viewport.width || 0), 1),
+            height: Math.max(Math.ceil(viewport.height || 0), 1),
+            deviceScaleFactor: viewport.deviceScaleFactor,
+            mobile: Boolean(viewport.isMobile),
+            screenOrientation: viewport.isLandscape
+                ? {
+                      type: "landscapePrimary",
+                      angle: 90
+                  }
+                : {
+                      type: "portraitPrimary",
+                      angle: 0
+                  }
+        })
     }
 }
 
@@ -158,6 +232,10 @@ class PuppeteerCompatBrowser {
         return this.browser.close()
     }
 
+    isConnected() {
+        return this.browser.isConnected?.() ?? true
+    }
+
     on(event, handler) {
         this.browser.on(event, handler)
         return this
@@ -189,9 +267,14 @@ export async function connect(options = {}) {
     return new PuppeteerCompatBrowser(browser)
 }
 
+export function wrapBrowser(browser, closeDelegate) {
+    return new PuppeteerCompatBrowser(browser, closeDelegate)
+}
+
 export default {
     launch,
-    connect
+    connect,
+    wrapBrowser
 }
 
 function normalizeLaunchOptions(options) {
@@ -207,11 +290,21 @@ function normalizeLaunchOptions(options) {
     return launchOptions
 }
 
-function normalizeViewport(viewport) {
+function normalizeViewportSize(viewport) {
     return {
         width: Math.max(Math.ceil(viewport.width || 0), 1),
         height: Math.max(Math.ceil(viewport.height || 0), 1)
     }
+}
+
+function normalizeNavigationOptions(options) {
+    const navigationOptions = {
+        ...options
+    }
+    if (navigationOptions.waitUntil === "networkidle0" || navigationOptions.waitUntil === "networkidle2") {
+        navigationOptions.waitUntil = "networkidle"
+    }
+    return navigationOptions
 }
 
 function normalizeScreenshotOptions(options) {
