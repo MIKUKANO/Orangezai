@@ -30,7 +30,7 @@
 
 注意：`lib/plugins/loader.js` 会把没有 `index.js` 的 `plugins/<目录>/` 下所有直属 `.js` 文件都当作插件入口加载。`plugins/adapter`、`plugins/other`、`plugins/system` 以及其他采用“多文件插件”模式的目录里，不要放共享 helper、测试桩或仅供导入的模块；这类文件应放到 `lib/tools/` 或其他不会被插件扫描的位置。
 
-渲染后端位于 `renderers/<name>/`，每个目录通过 `index.js` 注册。共享工作区包位于 `packages/`，当前包含 `packages/puppeteer`。默认配置放在 `config/default_config/`，本地可编辑配置放在 `config/config/`。静态网页资源位于 `resources/http/`。`logs/`、`data/`、`temp/` 属于运行产物，不应作为源码修改目标。
+渲染后端位于 `renderers/<name>/`，每个目录通过 `index.js` 注册。共享工作区包位于 `packages/`，当前包含 `packages/puppeteer`。`packages/puppeteer/` 是基于 Playwright 实现的 Puppeteer 兼容适配层，用于兼容旧插件常用的 Puppeteer 风格 API；新增或调整兼容接口时，应优先补充 `tests/puppeteer-compat.test.js`。默认配置放在 `config/default_config/`，本地可编辑配置放在 `config/config/`。静态网页资源位于 `resources/http/`。`logs/`、`data/`、`temp/` 属于运行产物，不应作为源码修改目标。
 
 ## 构建、运行与开发命令
 
