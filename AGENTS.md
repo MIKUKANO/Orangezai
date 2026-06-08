@@ -1,6 +1,7 @@
 # Repository Guidelines
 
 ## 项目结构与模块组织
+
 `app.js` 是进程入口，前台模式下会负责拉起和重启 Bot；`index.js` 作为包入口导出。核心运行时代码位于 `lib/`，是贡献者最常接触的目录：
 
 - `lib/bot.js`：Bot 主运行时入口，负责组装服务模块、启动流程和多账号聚合能力。通用能力通过 `apply*Service` 挂载到 `Orangezai.prototype`，保持 `Bot.makeLog`、`Bot.String` 等运行时 API 可用。
@@ -32,6 +33,7 @@
 渲染后端位于 `renderers/<name>/`，每个目录通过 `index.js` 注册。共享工作区包位于 `packages/`，当前包含 `packages/puppeteer`。默认配置放在 `config/default_config/`，本地可编辑配置放在 `config/config/`。静态网页资源位于 `resources/http/`。`logs/`、`data/`、`temp/` 属于运行产物，不应作为源码修改目标。
 
 ## 构建、运行与开发命令
+
 本仓库使用 Bun 管理依赖和脚本：
 
 - `bun install`：安装根工作区及插件依赖。
@@ -45,12 +47,15 @@
 - `bun run format`：使用 Biome 格式化代码。
 
 ## MCP 工具使用要求
+
 如果需要了解项目、理解代码上下文、做探索性搜索，优先使用 `mcp__fast-context__fast_context_search`，不要先假设代码位置或直接做大范围关键词扫描。
 
 ### 核心原则
+
 **任何需要理解代码上下文、探索性搜索、或自然语言定位代码的场景，优先使用 `mcp__fast-context__fast_context_search`。**
 
 ### 必须优先使用 fast-context 的场景
+
 - 探索性搜索：不确定代码位于哪个文件或目录。
 - 自然语言描述要找的逻辑：例如“XX 部署流程”“XX 事件处理”。
 - 理解业务逻辑和调用链路。
@@ -59,6 +64,7 @@
 - 中文语义搜索：工具支持中英文双语查询。
 
 ### 根据需求选择工具
+
 - 语义搜索或不确定位置：使用 `fast_context_search`，返回文件、行号范围和后续 grep 关键词建议。
 - 精确关键词搜索：使用 grep。
 - 已知文件路径并查看内容：直接读取文件。
@@ -66,19 +72,27 @@
 - 编辑已有文件：使用编辑工具，不把搜索工具当读取工具替代。
 
 ### fast_context_search 参数调优
+
 - `tree_depth=1, max_turns=1`：快速粗查，适合小项目或初步定位。
 - `tree_depth=3, max_turns=3`：默认平衡配置，适合大多数场景。
 - `max_turns=5`：深度搜索，适合复杂调用链追踪。
 - `project_path`：指定搜索的项目根目录，默认使用当前工作目录。
 
 ## 代码风格与命名约定
+
 统一使用 Biome 进行格式化和静态检查。保持 4 空格缩进、双引号、无分号，单行长度尽量控制在 120 列以内。目录名和模块文件名以小写为主，加载器类文件沿用现有命名，如 `loader.js`、`handler.js`、`runtime.js`。新增代码应保持 ESM 风格，并遵循现有运行时全局约定，例如 `Bot`、`Renderer`、`plugin`、`redis`，不要随意引入新的全局模式。
 
 ## 测试说明
+
 当前仓库已有最小测试目录 `tests/`，目前包含 `plugin-context.test.js` 和 `other-common.test.js`，覆盖插件上下文状态机以及 `lib/tools/plugin-common.js` 的共享辅助逻辑。提交前至少运行 `bun run check`；只要改动了底层运行时、共享 helper、插件交互链路或更新/安装逻辑，就应一并运行 `bun run test`。把 `bun test` 当成日常检查的一部分，而不是只在怀疑出错时才运行。修改插件或渲染器时，重点确认加载是否成功、命令匹配是否正常、配置读取是否符合预期。
 
 ## 提交与 Pull Request 规范
-现有提交历史以简短、直接的标题为主，常见中文描述，也有 `chore:` 这类前缀。提交信息应聚焦单一改动，例如 `fix: plugin hot reload path`、`优化渲染器加载日志`。PR 需要说明改动摘要、影响目录、是否涉及配置或依赖变更，以及明确的人工验证步骤。涉及网页渲染、界面输出或 Bot 行为变更时，附上截图或关键日志更合适。
+
+* 提交信息必须以动词开头，例如：fix、feat、refactor 等。
+* 提交信息必须包含一个短的描述，例如：修复 bug 123、添加新功能、优化代码等。
+* 提交信息必须包含一个空行，然后是更详细的描述。
+* 使用中文编写，如果出现文件名或者专业名词就保持英文或者源文件名字。
 
 ## 安全与配置建议
+
 不要提交密钥、机器人凭据或本地专用配置。默认安全配置放在 `config/default_config/`，机器相关配置保留在 `config/config/`。如果插件新增依赖，应同步更新 `package.json`，确保其他开发者执行 `bun install` 后可以复现运行环境。
