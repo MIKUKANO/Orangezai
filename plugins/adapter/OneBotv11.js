@@ -823,6 +823,7 @@ Bot.adapter.push(
                 adapter: this,
                 ws: ws,
                 sendApi: (action, params) => this.sendApi(data, ws, action, params),
+                getMsg: message_id => this.getMsg(data, message_id),
                 stat: {
                     start_time: data.time,
                     stat: {},
