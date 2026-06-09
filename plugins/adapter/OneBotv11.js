@@ -225,14 +225,34 @@ Bot.adapter.push(
             return msg
         }
 
-        async getGroupMsgHistory(data, message_seq, count) {
-            const msgs = (
-                await data.bot.sendApi("get_group_msg_history", {
-                    group_id: data.group_id,
-                    message_seq,
-                    count
-                })
-            ).data?.messages
+        async getFriendMsgHistory(data, message_seq, count, reverseOrder) {
+            const params = {
+                user_id: data.user_id,
+                message_seq,
+                count
+            }
+            if (reverseOrder !== undefined) params.reverseOrder = reverseOrder
+
+            const msgs = (await data.bot.sendApi("get_friend_msg_history", params)).data?.messages
+
+            for (const i of Array.isArray(msgs)
+                ? msgs
+                : [
+                      msgs
+                  ])
+                if (i?.message) i.message = this.parseMsg(i.message)
+            return msgs
+        }
+
+        async getGroupMsgHistory(data, message_seq, count, reverseOrder) {
+            const params = {
+                group_id: data.group_id,
+                message_seq,
+                count
+            }
+            if (reverseOrder !== undefined) params.reverseOrder = reverseOrder
+
+            const msgs = (await data.bot.sendApi("get_group_msg_history", params)).data?.messages
 
             for (const i of Array.isArray(msgs)
                 ? msgs
@@ -599,6 +619,15 @@ Bot.adapter.push(
             })
         }
 
+        async getPrivateFileUrl(data, file_id) {
+            return (
+                await data.bot.sendApi("get_private_file_url", {
+                    user_id: data.user_id,
+                    file_id
+                })
+            ).url
+        }
+
         async sendGroupFile(data, file, folder, name = path.basename(file)) {
             Bot.makeLog("info", `发送群文件：${folder || ""}/${name}(${file})`, `${data.self_id} => ${data.group_id}`)
             return data.bot.sendApi("upload_group_file", {
@@ -679,6 +708,40 @@ Bot.adapter.push(
             })
         }
 
+        deleteFriend(data) {
+            Bot.makeLog("info", "删除好友", `${data.self_id} => ${data.user_id}`)
+            return data.bot
+                .sendApi("delete_friend", {
+                    user_id: data.user_id
+                })
+                .finally(() => data.bot.getFriendMap())
+        }
+
+        getGroupHonorInfo(data, type = "all") {
+            return data.bot.sendApi("get_group_honor_info", {
+                group_id: data.group_id,
+                type
+            })
+        }
+
+        getEssenceMsg(data) {
+            return data.bot.sendApi("get_essence_msg_list", {
+                group_id: data.group_id
+            })
+        }
+
+        setEssenceMsg(data, message_id) {
+            return data.bot.sendApi("set_essence_msg", {
+                message_id
+            })
+        }
+
+        deleteEssenceMsg(data, message_id) {
+            return data.bot.sendApi("delete_essence_msg", {
+                message_id
+            })
+        }
+
         pickFriend(data, user_id) {
             const i = {
                 ...data.bot.fl.get(user_id),
@@ -695,7 +758,10 @@ Bot.adapter.push(
                 sendFile: (file, name) => this.sendFriendFile(i, file, name),
                 getInfo: () => this.getFriendInfo(i),
                 getAvatarUrl: () => i.avatar || `https://q.qlogo.cn/g?b=qq&s=0&nk=${user_id}`,
-                thumbUp: times => this.sendLike(i, times)
+                getChatHistory: (seq, cnt, reverseOrder) => this.getFriendMsgHistory(i, seq, cnt, reverseOrder),
+                thumbUp: times => this.sendLike(i, times),
+                delete: () => this.deleteFriend(i),
+                getFileUrl: file_id => this.getPrivateFileUrl(i, file_id)
             }
         }
 
@@ -788,7 +854,9 @@ Bot.adapter.push(
                 sendFile: (file, name) => this.sendGroupFile(i, file, undefined, name),
                 getInfo: () => this.getGroupInfo(i),
                 getAvatarUrl: () => i.avatar || `https://p.qlogo.cn/gh/${group_id}/${group_id}/0`,
-                getChatHistory: (seq, cnt) => this.getGroupMsgHistory(i, seq, cnt),
+                getChatHistory: (seq, cnt, reverseOrder) => this.getGroupMsgHistory(i, seq, cnt, reverseOrder),
+                getHonorInfo: type => this.getGroupHonorInfo(i, type),
+                getEssence: () => this.getEssenceMsg(i),
                 getMemberArray: () => this.getMemberArray(i),
                 getMemberList: () => this.getMemberList(i),
                 getMemberMap: () => this.getMemberMap(i),
@@ -889,6 +957,8 @@ Bot.adapter.push(
                 setFriendAddRequest: (flag, approve, remark) => this.setFriendAddRequest(data, flag, approve, remark),
                 setGroupAddRequest: (flag, sub_type, approve, reason) =>
                     this.setGroupAddRequest(data, flag, sub_type, approve, reason),
+                setEssenceMessage: message_id => this.setEssenceMsg(data, message_id),
+                removeEssenceMessage: message_id => this.deleteEssenceMsg(data, message_id),
 
                 cookies: {},
                 getCookies(domain) {
