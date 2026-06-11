@@ -3,7 +3,7 @@
     "vcs": {
         "enabled": true,
         "clientKind": "git",
-        "useIgnoreFile": true
+        "useIgnoreFile": false
     },
     "files": {
         "ignoreUnknown": false,
@@ -11,6 +11,15 @@
             "**",
             "!.github",
             "!.vscode",
+            "!plugins/*",
+            "plugins/adapter",
+            "!data",
+            "!logs",
+            "!node_modules",
+            "!temp",
+            "!dump.rdb",
+            "!.ace-tool",
+            "!.trae",
             "!lib/modules"
         ]
     },
@@ -64,6 +73,20 @@
             "trailingCommas": "none"
         }
     },
+    "overrides": [
+        {
+            "includes": [
+                "plugins/adapter/**/*.js"
+            ],
+            "linter": {
+                "rules": {
+                    "style": {
+                        "useBlockStatements": "off"
+                    }
+                }
+            }
+        }
+    ],
     "assist": {
         "enabled": false
     }

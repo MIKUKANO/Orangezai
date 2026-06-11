@@ -1,6 +1,8 @@
 import path from "node:path"
 import { ulid } from "ulid"
 
+const fileToUrlSizeLimit = 10 * 1024 * 1024
+
 Bot.adapter.push(
     new (class OneBotv11Adapter {
         constructor() {
@@ -52,11 +54,44 @@ Bot.adapter.push(
             )
         }
 
-        async makeFile(file) {
+        async makeFile(file, opts = {}) {
+            if (typeof opts === "string")
+                opts = {
+                    type: opts
+                }
+
+            const { urlSizeLimit = fileToUrlSizeLimit, ...bufferOpts } = opts
+            const urlOpts = {
+                name: opts.name,
+                time: opts.time,
+                times: opts.times
+            }
+
+            if (urlSizeLimit > 0) {
+                if (Buffer.isBuffer(file)) {
+                    if (file.length > urlSizeLimit) return Bot.fileToUrl(file, urlOpts)
+                } else if (typeof file === "string") {
+                    if (file.match(/^https?:\/\//)) return file
+
+                    if (file.startsWith("base64://")) {
+                        const size = Buffer.byteLength(file.replace(/^base64:\/\//, ""), "base64")
+                        if (size > urlSizeLimit) return Bot.fileToUrl(file, urlOpts)
+                    } else {
+                        const stat = await Bot.fsStat(file.replace(/^file:\/\//, ""))
+                        if (stat?.isFile?.() && stat.size > urlSizeLimit) return Bot.fileToUrl(file, urlOpts)
+                    }
+                }
+            }
+
             file = await Bot.Buffer(file, {
-                http: true
+                http: true,
+                ...bufferOpts
             })
-            if (Buffer.isBuffer(file)) file = `base64://${file.toString("base64")}`
+
+            if (Buffer.isBuffer(file) && urlSizeLimit > 0 && file.length > urlSizeLimit) {
+                return Bot.fileToUrl(file, urlOpts)
+            }
+            if (Buffer.isBuffer(file)) return `base64://${file.toString("base64")}`
             return file
         }
 
@@ -101,7 +136,7 @@ Bot.adapter.push(
                         break
                 }
 
-                if (i.data.file) i.data.file = await this.makeFile(i.data.file)
+                if (i.data.file) i.data.file = await this.makeFile(i.data.file, i.type)
 
                 msgs.push(i)
             }
