@@ -23,6 +23,8 @@
         "pm2": "^5.4.2",
         "puppeteer": "workspace:*",
         "redis": "^4.7.0",
+        "sequelize": "^6.37.8",
+        "sqlite3": "file:./lib/modules/sqlite3",
         "ulid": "^2.3.0",
         "ws": "^8.18.0",
         "yaml": "^2.5.0"

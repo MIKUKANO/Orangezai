@@ -1,0 +1,4 @@
+{
+  "name": "sqlite3",
+  "main": "index.cjs"
+}

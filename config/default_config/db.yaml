@@ -1,0 +1,8 @@
+# 数据库类型，默认使用 SQLite
+dialect: sqlite
+
+# SQLite 数据库文件路径
+storage: data/db/data.db
+
+# 是否输出 SQL 日志
+logging: false
