@@ -25,7 +25,7 @@
         "puppeteer": "workspace:*",
         "redis": "^4.7.0",
         "sequelize": "^6.37.8",
-        "sqlite3": "file:./lib/modules/sqlite3",
+        "sqlite3": "npm:@karinjs/sqlite3@^0.4.3",
         "ulid": "^2.3.0",
         "ws": "^8.18.0",
         "yaml": "^2.5.0",
@@ -76,6 +76,22 @@
     "@biomejs/cli-win32-x64": ["@biomejs/cli-win32-x64@2.4.16", "https://registry.npmmirror.com/@biomejs/cli-win32-x64/-/cli-win32-x64-2.4.16.tgz", { "os": "win32", "cpu": "x64" }, "sha512-Kp85jgoBHa05gix6UIRjfCDiUV3w/8VIdZ247VyyO2gEjaw12WEVhdIjlxp/AMzXxqxQwbxNTDVZ3Mwd2RG5rw=="],
 
     "@borewit/text-codec": ["@borewit/text-codec@0.2.2", "https://registry.npmmirror.com/@borewit/text-codec/-/text-codec-0.2.2.tgz", {}, "sha512-DDaRehssg1aNrH4+2hnj1B7vnUGEjU6OIlyRdkMd0aUdIUvKXrJfXsy8LVtXAy7DRvYVluWbMspsRhz2lcW0mQ=="],
+
+    "@karinjs/sqlite3-napi-v6-darwin-arm64": ["@karinjs/sqlite3-napi-v6-darwin-arm64@0.4.3", "https://registry.npmmirror.com/@karinjs/sqlite3-napi-v6-darwin-arm64/-/sqlite3-napi-v6-darwin-arm64-0.4.3.tgz", { "os": "darwin", "cpu": "arm64" }, "sha512-lz7s2WWdVyQ6r/zszwByt32P8DtEeihVPur+Ovn607tbYiorB1P9/EAPPxIc730oCmATN2OSRggjnIr0x2gH4Q=="],
+
+    "@karinjs/sqlite3-napi-v6-darwin-x64": ["@karinjs/sqlite3-napi-v6-darwin-x64@0.4.3", "https://registry.npmmirror.com/@karinjs/sqlite3-napi-v6-darwin-x64/-/sqlite3-napi-v6-darwin-x64-0.4.3.tgz", { "os": "darwin", "cpu": "x64" }, "sha512-6GCIhHYC2UOz8Cs5Se4+pIFeaa/gRWRySy+4HT7L80AOhBTqb9WHrau1RUetTZCLENFBS1ECdYGaDgPPuEdOIQ=="],
+
+    "@karinjs/sqlite3-napi-v6-linux-arm64": ["@karinjs/sqlite3-napi-v6-linux-arm64@0.4.3", "https://registry.npmmirror.com/@karinjs/sqlite3-napi-v6-linux-arm64/-/sqlite3-napi-v6-linux-arm64-0.4.3.tgz", { "os": "linux", "cpu": "arm64" }, "sha512-qWWDRil6xdp9BRFFX8tjntCcWdvvLKKIZcrPuw2y4BZtxgGsx+0oNEiPdPPUv7o8ld8mEVCI0WcMVbPIyVB3iw=="],
+
+    "@karinjs/sqlite3-napi-v6-linux-x64": ["@karinjs/sqlite3-napi-v6-linux-x64@0.4.3", "https://registry.npmmirror.com/@karinjs/sqlite3-napi-v6-linux-x64/-/sqlite3-napi-v6-linux-x64-0.4.3.tgz", { "os": "linux", "cpu": "x64" }, "sha512-i45miK/LWjj3V3CGTQKqjzJ4373GieqqmS0B7m7TThdY7c5r2O6QjIaa/wrCjx6v+DnPficXvYvwF55EJ/5+Zw=="],
+
+    "@karinjs/sqlite3-napi-v6-linuxmusl-arm64": ["@karinjs/sqlite3-napi-v6-linuxmusl-arm64@0.4.3", "https://registry.npmmirror.com/@karinjs/sqlite3-napi-v6-linuxmusl-arm64/-/sqlite3-napi-v6-linuxmusl-arm64-0.4.3.tgz", { "os": "linux", "cpu": "arm64" }, "sha512-EOtq05hEnjrPddv6tnhlxWVusR+56I9ArVVU7O+pUgJ80S3ZRmSfpJX6c8NejgG9ZFtJ81KE2TUwmkGsYSt0dA=="],
+
+    "@karinjs/sqlite3-napi-v6-linuxmusl-x64": ["@karinjs/sqlite3-napi-v6-linuxmusl-x64@0.4.3", "https://registry.npmmirror.com/@karinjs/sqlite3-napi-v6-linuxmusl-x64/-/sqlite3-napi-v6-linuxmusl-x64-0.4.3.tgz", { "os": "linux", "cpu": "x64" }, "sha512-v0qPA2iJY/Ngl615zuN94OQITV3IjKavXAS0XBey23p5Jak2tDsXX+aZ21g/qmS380BKP+d5K869gHMx80wZSA=="],
+
+    "@karinjs/sqlite3-napi-v6-win32-ia32": ["@karinjs/sqlite3-napi-v6-win32-ia32@0.4.3", "https://registry.npmmirror.com/@karinjs/sqlite3-napi-v6-win32-ia32/-/sqlite3-napi-v6-win32-ia32-0.4.3.tgz", { "os": "win32", "cpu": "ia32" }, "sha512-gwXXFZfBBDdYc8/XdViTLNLM30LbQqhPXCz3Po0fGK/0iZtkRVOAzJR5jRkpvf/sF7Sd2zwiZ4pa3j5qsxQ6YQ=="],
+
+    "@karinjs/sqlite3-napi-v6-win32-x64": ["@karinjs/sqlite3-napi-v6-win32-x64@0.4.3", "https://registry.npmmirror.com/@karinjs/sqlite3-napi-v6-win32-x64/-/sqlite3-napi-v6-win32-x64-0.4.3.tgz", { "os": "win32", "cpu": "x64" }, "sha512-jEtI3gDDUPwgnSXp1G6h3/Oey4j2FGI7b0XycrD7pz617q0v4H9qxl9FrwVhTIV5eppWa5f6f9df7sbno79hZA=="],
 
     "@pm2/agent": ["@pm2/agent@2.0.4", "https://registry.npmmirror.com/@pm2/agent/-/agent-2.0.4.tgz", { "dependencies": { "async": "~3.2.0", "chalk": "~3.0.0", "dayjs": "~1.8.24", "debug": "~4.3.1", "eventemitter2": "~5.0.1", "fast-json-patch": "^3.0.0-1", "fclone": "~1.0.11", "nssocket": "0.6.0", "pm2-axon": "~4.0.1", "pm2-axon-rpc": "~0.7.0", "proxy-agent": "~6.3.0", "semver": "~7.5.0", "ws": "~7.5.10" } }, "sha512-n7WYvvTJhHLS2oBb1PjOtgLpMhgImOq8sXkPBw6smeg9LJBWZjiEgPKOpR8mn9UJZsB5P3W4V/MyvNnp31LKeA=="],
 
@@ -669,7 +685,7 @@
 
     "sprintf-js": ["sprintf-js@1.1.2", "https://registry.npmmirror.com/sprintf-js/-/sprintf-js-1.1.2.tgz", {}, "sha512-VE0SOVEHCk7Qc8ulkWw3ntAzXuqf7S2lvwQaDLRnUeIEaKNQJzV6BwmLKhOqT61aGhfUMrXeaBk+oDGCzvhcug=="],
 
-    "sqlite3": ["sqlite3@file:lib/modules/sqlite3", {}],
+    "sqlite3": ["@karinjs/sqlite3@0.4.3", "https://registry.npmmirror.com/@karinjs/sqlite3/-/sqlite3-0.4.3.tgz", { "optionalDependencies": { "@karinjs/sqlite3-napi-v6-darwin-arm64": "0.4.3", "@karinjs/sqlite3-napi-v6-darwin-x64": "0.4.3", "@karinjs/sqlite3-napi-v6-linux-arm64": "0.4.3", "@karinjs/sqlite3-napi-v6-linux-x64": "0.4.3", "@karinjs/sqlite3-napi-v6-linuxmusl-arm64": "0.4.3", "@karinjs/sqlite3-napi-v6-linuxmusl-x64": "0.4.3", "@karinjs/sqlite3-napi-v6-win32-ia32": "0.4.3", "@karinjs/sqlite3-napi-v6-win32-x64": "0.4.3" } }, "sha512-8BapqiKlyh2AS7FVQa6TNNEyVc2fBFjMpPIrtJZUHlGZLDNGJTAJFePdAxSwrKuR6dEyoMZPzr48uzRfoRnqHQ=="],
 
     "sshpk": ["sshpk@1.18.0", "https://registry.npmmirror.com/sshpk/-/sshpk-1.18.0.tgz", { "dependencies": { "asn1": "~0.2.3", "assert-plus": "^1.0.0", "bcrypt-pbkdf": "^1.0.0", "dashdash": "^1.12.0", "ecc-jsbn": "~0.1.1", "getpass": "^0.1.1", "jsbn": "~0.1.0", "safer-buffer": "^2.0.2", "tweetnacl": "~0.14.0" }, "bin": { "sshpk-conv": "bin/sshpk-conv", "sshpk-sign": "bin/sshpk-sign", "sshpk-verify": "bin/sshpk-verify" } }, "sha512-2p2KJZTSqQ/I3+HX42EpYOa2l3f8Erv8MWKsy2I9uf4wA7yFIkXRffYdsx86y6z4vHtV8u7g+pPlr8/4ouAxsQ=="],
 
