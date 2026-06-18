@@ -6,7 +6,7 @@ log_length: 10000
 log_object: true
 
 # 服务器地址
-url: "::"
+url: http://localhost:2536
 # 服务器端口
 port: 2536
 # 服务器缺省跳转地址
